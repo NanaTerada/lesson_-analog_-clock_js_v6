@@ -29,10 +29,22 @@
                     ctx.translate(width / 2, height / 2);
                     ctx.rotate(2 * Math.PI / 360 * angle); //アングルをラジアンに変換しつつ。。。？
 
-                    // 短い線を描いていく
+                    //細い線を描いていく
                     ctx.beginPath();
                     ctx.moveTo(0,-this.r); //中心から半径の位置まで　-this.r←マイナス方向に半径分
-                    ctx.lineTo(0,-this.r + 5); //線の長さ
+
+                    if (angle % 30=== 0) {
+                        ctx.lineWidth = 2;
+                        ctx.lineTo(0,-this.r + 10);
+                        ctx.font = '13px Arial'
+                        ctx.textAlign = 'center';
+                        ctx.fillText(angle/ 30 || 12,0,-this.r + 25); //|| 12 falseだったら12を使いなさい
+
+                    } else {
+                        ctx.lineTo(0,-this.r + 5); //線の長さ
+                    }
+
+                    
                     ctx.stroke(); //線をひく
 
                     ctx.restore();//次のループの時に座標空間をもどしたいので
