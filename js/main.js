@@ -1,25 +1,28 @@
 'use strict' ;
 
-{
+(() => {
     // クラス
+    class ClockDrawer {
+        constructor(canvas) {
+            this.ctx = canvas.getContext('2d');
+            this.width = canvas.width;
+            this.height = canvas.height;
+
+        }
+
+    }
+
     class Clock {
-            constructor() {
+            constructor(drawer) {
                 this.r = 100;
+                this.drawer = drawer ;
             }
         
 
             // 時計の盤面を描画するメソッド
             drawFace() {
-                const canvas = document.querySelector('canvas');
                 
-                if (typeof canvas.getContext === 'undefined') {
-                    return;
-                }
-                const ctx = canvas.getContext('2d');
-
-
-                const width = canvas.width;
-                const height = canvas.height;
+               
 
                 // 360 / 60 = 6 6度ずつ回転しながら描画
                 for (let angle = 0; angle <360; angle += 6) {
@@ -55,10 +58,16 @@
                 this.drawFace();
 
             }
-
     }
 
+                const canvas = document.querySelector('canvas');
+                
+                if (typeof canvas.getContext === 'undefined') {
+                    return;
+                }
+
     // インスタンス
-    const clock = new Clock();
+    const clock = new Clock(new ClockDrawer(canvas));
     clock.run();
-}
+
+})();
