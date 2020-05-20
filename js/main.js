@@ -7,6 +7,23 @@
             this.ctx = canvas.getContext('2d');
             this.width = canvas.width;
             this.height = canvas.height;
+        }
+
+        draw(angle,func) {
+            this.ctx.save(); //次のループの時に座標空間をもどしたいので
+
+            //原点をキャンバスの中心に移動させる
+            this.ctx.translate(this.width / 2, this.height / 2);
+            this.ctx.rotate(2 * Math.PI / 360 * angle); //アングルをラジアンに変換しつつ。。。？
+
+            //細い線を描いていく
+            this.ctx.beginPath();
+            
+            func(this.ctx);
+            
+            this.ctx.stroke(); //線をひく
+
+            this.ctx.restore();//次のループの時に座標空間をもどしたいので
 
         }
 
@@ -26,15 +43,8 @@
 
                 // 360 / 60 = 6 6度ずつ回転しながら描画
                 for (let angle = 0; angle <360; angle += 6) {
-                    ctx.save(); //次のループの時に座標空間をもどしたいので
-
-                    //原点をキャンバスの中心に移動させる
-                    ctx.translate(width / 2, height / 2);
-                    ctx.rotate(2 * Math.PI / 360 * angle); //アングルをラジアンに変換しつつ。。。？
-
-                    //細い線を描いていく
-                    ctx.beginPath();
-                    ctx.moveTo(0,-this.r); //中心から半径の位置まで　-this.r←マイナス方向に半径分
+                    this.drawer.draw(angle,ctx => {
+                        ctx.moveTo(0,-this.r); //中心から半径の位置まで　-this.r←マイナス方向に半径分
 
                     if (angle % 30=== 0) {
                         ctx.lineWidth = 2;
@@ -47,10 +57,8 @@
                         ctx.lineTo(0,-this.r + 5); //線の長さ
                     }
 
-                    
-                    ctx.stroke(); //線をひく
-
-                    ctx.restore();//次のループの時に座標空間をもどしたいので
+                    });
+                   
                 } 
             }
 
